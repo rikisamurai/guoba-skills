@@ -1,0 +1,19 @@
+README.md
+  s_52ee01b047b157::t_07d734aaebea33 35
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.1",
+  "base_commit_sha": "0b43f4e14262038383cdb80ffb43835cbf322fd6",
+  "prompts": {},
+  "sessions": {
+    "s_52ee01b047b157": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "3834e39c-b965-4a5f-ae0d-39b6c3698edd",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "riki <shanyulong@xiaohongshu.com>"
+    }
+  }
+}
