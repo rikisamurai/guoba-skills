@@ -1,0 +1,19 @@
+.gitignore
+  s_52ee01b047b157::t_fd1810b48e434e 13-15
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.1",
+  "base_commit_sha": "9cef5c811df6d2721f94eea5a3d502081265d999",
+  "prompts": {},
+  "sessions": {
+    "s_52ee01b047b157": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "3834e39c-b965-4a5f-ae0d-39b6c3698edd",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "riki <shanyulong@xiaohongshu.com>"
+    }
+  }
+}
