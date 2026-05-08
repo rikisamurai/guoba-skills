@@ -1,0 +1,33 @@
+docs/superpowers/plans/2026-05-08-guoba-skills-installable.md
+  s_9d6cba1371be64::t_6081e55ffd481c 1-118,120-123,125,127,130,132,135,137-138,141-142,144-151,153-154,156-157,159-219,221-222,224-225,227,232-371,373-376,378,380-381,383-384,386,389,392-398,409,411-412,414-415,417,419-434
+  s_9d6cba1371be64::t_9dbb351c4bb82f 119,124,126,128-129,131,133-134,136,139-140,143,152,155,158
+  s_9d6cba1371be64::t_0988fb3df0d34e 220,223,226,228-231
+  s_9d6cba1371be64::t_8f34f82ed93dab 372,377,379,382,385,387-388,390-391,399-408,410,413,416,418
+.gitignore
+  s_9d6cba1371be64::t_f0adea7990cf10 10-12
+README.md
+  s_9d6cba1371be64::t_ba6e8704c2b37c 29-42
+.claude/settings.json
+  h_64bbaa61ee70b1 1-19
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.1",
+  "base_commit_sha": "2478ff930a7bfdd680844c1165f2b738770e37e4",
+  "prompts": {},
+  "humans": {
+    "h_64bbaa61ee70b1": {
+      "author": "riki <shanyulong@xiaohongshu.com>"
+    }
+  },
+  "sessions": {
+    "s_9d6cba1371be64": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "d98718a3-28e2-48f9-982e-39d1120bc6d1",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "riki <shanyulong@xiaohongshu.com>"
+    }
+  }
+}
