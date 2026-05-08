@@ -1,0 +1,15 @@
+.DS_Store
+*.pyc
+__pycache__/
+.coverage
+.mypy_cache/
+.pytest_cache/
+.ruff_cache/
+.worktrees/
+worktrees/
+
+# Personal Claude Code settings — not for public distribution
+.claude/settings.local.json
+
+# Superpowers planning artifacts — local working notes, not for public distribution
+docs/superpowers/
