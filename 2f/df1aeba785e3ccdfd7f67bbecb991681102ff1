@@ -1,0 +1,19 @@
+docs/superpowers/specs/2026-05-08-guoba-skills-installable-design.md
+  s_9d6cba1371be64::t_5f4bad83980d67 1-150
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.1",
+  "base_commit_sha": "2fdf1aeba785e3ccdfd7f67bbecb991681102ff1",
+  "prompts": {},
+  "sessions": {
+    "s_9d6cba1371be64": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "d98718a3-28e2-48f9-982e-39d1120bc6d1",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "riki <shanyulong@xiaohongshu.com>"
+    }
+  }
+}
