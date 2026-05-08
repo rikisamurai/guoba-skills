@@ -1,0 +1,23 @@
+scripts/new_skill.py
+  s_52ee01b047b157::t_f8704904343ede 72
+tests/test_scripts.py
+  s_52ee01b047b157::t_ad4e53d6f2ea91 140
+  s_52ee01b047b157::t_2c555f5261304c 227-484
+  s_52ee01b047b157::t_eab2ab3e7bf432 2
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.1",
+  "base_commit_sha": "393bab36afcc6caae91cee567ca33cbefe40e1a6",
+  "prompts": {},
+  "sessions": {
+    "s_52ee01b047b157": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "3834e39c-b965-4a5f-ae0d-39b6c3698edd",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "riki <shanyulong@xiaohongshu.com>"
+    }
+  }
+}
