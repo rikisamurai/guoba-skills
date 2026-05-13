@@ -1,0 +1,14 @@
+.gitignore
+  h_5edf2e61cf4c64 10
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.8",
+  "base_commit_sha": "a219cd27400ae2a31b7d591253571cad4bfff145",
+  "prompts": {},
+  "humans": {
+    "h_5edf2e61cf4c64": {
+      "author": "riki <122594833+rikisamurai@users.noreply.github.com>"
+    }
+  }
+}
