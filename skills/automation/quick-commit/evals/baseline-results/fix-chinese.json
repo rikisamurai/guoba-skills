@@ -1,0 +1,8 @@
+{
+  "commit_message": "fix(auth): 兼容用户或 profile 为空的场景",
+  "commit_hash": "c167531",
+  "files_committed": ["auth.py"],
+  "files_skipped": [],
+  "final_status_short": "",
+  "agent_report": "已提交 c167531\n\n```\nfix(auth): 兼容用户或 profile 为空的场景\n```\n\n- 文件：auth.py（+2/-0）\n- 工作树已清理，无未跟踪文件被跳过。"
+}
