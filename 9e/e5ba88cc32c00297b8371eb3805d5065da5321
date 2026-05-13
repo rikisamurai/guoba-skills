@@ -1,0 +1,12 @@
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.8",
+  "base_commit_sha": "9ee5ba88cc32c00297b8371eb3805d5065da5321",
+  "prompts": {},
+  "humans": {
+    "h_5edf2e61cf4c64": {
+      "author": "riki <122594833+rikisamurai@users.noreply.github.com>"
+    }
+  }
+}
