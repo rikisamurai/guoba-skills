@@ -7,6 +7,7 @@ __pycache__/
 .ruff_cache/
 .worktrees/
 worktrees/
+.idea
 
 # Personal Claude Code settings — not for public distribution
 .claude/settings.local.json

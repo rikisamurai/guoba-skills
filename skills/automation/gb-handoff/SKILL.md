@@ -1,5 +1,5 @@
 ---
-name: session-handoff
+name: gb-handoff
 description: >
   Produce a self-contained handoff prompt for another agent (Codex, a fresh
   Claude session, a teammate) when the user wants to delegate continued work.
@@ -12,7 +12,7 @@ metadata:
   version: "0.1.0"
 ---
 
-# session-handoff
+# gb-handoff
 
 Write a handoff prompt that lets a cold receiving agent continue the current
 work without re-asking the user for context. The receiving agent has **zero**
