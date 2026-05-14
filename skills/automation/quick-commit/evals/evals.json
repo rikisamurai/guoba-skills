@@ -52,7 +52,7 @@
       "id": 2,
       "name": "fix-chinese",
       "fixture": "eval-2-fix-chinese",
-      "prompt": "提交一下",
+      "prompt": "快速提交",
       "scenario": "One tracked file modification (`auth.py`) adds a None guard preventing attribute access on a null user/profile — a real bug fix. Repo log is entirely Chinese Conventional Commits.",
       "assertions": [
         {"id": "type-is-fix", "weight": "must", "human": "Commit type is fix(.", "check": {"type": "regex_match", "field": "commit_message", "pattern": "^fix\\("}},

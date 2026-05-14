@@ -1,41 +1,76 @@
 ---
 name: quick-commit
 description: >
-  Stage tracked changes and create a Conventional Commits commit in one shot —
-  no message-drafting back-and-forth, no confirmation prompts. Trigger on:
-  "quick commit"、"qc"、"快速提交"、"提个 commit"、"commit 一下"、"帮我
-  commit"、"提交一下"、"ship it"、"commit & push (without push)", or any short
-  request to capture current changes as a single commit. Skip when the user
-  wants to (a) review/edit the message before committing, (b) only stage files,
-  or (c) split the changes across multiple commits.
+  Stage tracked changes and ship a Conventional Commits commit in one shot,
+  WITHOUT previewing the message or asking the user to confirm. Invoking
+  this skill IS the user's authorization — they don't want a round-trip.
+  Trigger ONLY when the request explicitly contains a "quick" signal:
+  "qc"、"quick commit"、"quick commit it"、"快速 commit"、"快速提交". Do
+  NOT trigger on bare "commit 一下"、"帮我 commit"、"提交一下"、"ship it" or
+  any other generic commit phrasing — those leave room for message review,
+  use the normal git workflow there. Also skip when the user wants to
+  (a) review/edit the message before committing, (b) only stage files, or
+  (c) split the changes across multiple commits.
 metadata:
   author: riki
-  version: "0.1.0"
+  version: "0.2.0"
 ---
 
 # Quick Commit
 
 One-shot autonomous commit. The user has already decided to commit; your job
 is to look at what changed, write a faithful Conventional Commits message in
-the repo's existing style, and ship it. No "does this message look good?"
-round-trip — that defeats the point.
+the repo's existing style, and ship it.
+
+## Contract: pre-authorized, no confirmation
+
+The user typing `qc` (or another trigger phrase from the description above)
+**is** the confirmation. They picked this skill specifically because they do
+not want to look at the message before it lands. Asking "does this look
+good?" / "shall I commit?" / "请确认一下" defeats the entire point — if they
+wanted that, they would have asked you to draft a message instead.
+
+Concretely, in the same turn you receive the trigger phrase you must:
+
+- **Not** preview the message back to the user before running `git commit`.
+- **Not** ask "is this OK?" / "shall I proceed?" / "可以提交吗".
+- **Not** pause after staging to wait for input.
+- **Not** present multiple message options for the user to pick from.
+- **Not** split the work across turns ("I'll analyze the diff first, then
+  commit on your next reply").
+
+Run snapshot → stage → diff → message → `git commit` → report, all in one
+turn, with no user-facing message until the report at the end.
+
+A `git commit` is **reversible** (`git reset HEAD~1`, `git commit --amend`,
+`git reflog`). It does **not** qualify as a "hard-to-reverse action" under
+Claude Code's default confirmation rules. Confirmation here is friction, not
+safety.
+
+The only legitimate reasons to stop and talk to the user before the commit
+lands are the edge cases listed at the bottom of this file (mid-rebase,
+clean tree, likely-secret detected, etc.). If you find yourself drafting a
+"just to confirm…" sentence for any other reason, stop and reread this
+section.
 
 ## When to invoke
 
-- Short, imperative requests to commit: "qc"、"quick commit"、"提交一下"、
-  "commit 一下"、"ship it"、"帮我 commit"、"快速提交"。
+- The user's message contains an explicit "quick" signal: `qc`,
+  `quick commit`, `quick commit it`, `快速 commit`, `快速提交`.
 - The user is clearly handing the commit step off to you because they trust
   the diff is in a committable state.
 
 Do **not** invoke when:
 
-- The user says "draft a commit message" / "想个 commit message" — they want
-  to see/edit before committing. Use plain commit workflow instead.
+- The user says "draft a commit message" / "想个 commit message" / "提个
+  commit"、"commit 一下"、"帮我 commit"、"提交一下"、"ship it" — these are
+  generic commit asks where the user may still want to see the message
+  first. Use the plain commit workflow there, not this skill.
 - The user wants to split the working tree into multiple commits.
 - There are merge conflicts, rebase in progress, or detached HEAD — bail out
   and tell the user.
-- The user asked to push, tag, or open a PR. This skill only commits; mention
-  that follow-ups need a separate request.
+- The user asked to push, tag, or open a PR. This skill only commits;
+  mention that follow-ups need a separate request.
 
 ## Workflow
 
@@ -162,7 +197,10 @@ common; some repos use the directory name verbatim).
 
 For most quick commits, **no body is needed**. Don't pad.
 
-### 5. Commit
+### 5. Commit (immediately, no preview)
+
+Run `git commit` in the same turn. Do **not** show the drafted message to
+the user first and wait — re-read the Contract section if you're tempted.
 
 Use a HEREDOC so the message renders correctly even with special chars or
 multi-line bodies:
@@ -217,6 +255,8 @@ report should be quick too.
 
 Before reporting success, check:
 
+- [ ] You actually ran `git commit` this turn — no "let me confirm first"
+      pause, no preview-then-wait.
 - [ ] The commit message's type matches what the diff actually does (no
       `chore:` for a real bugfix, no `feat:` for a refactor).
 - [ ] The subject line reads like a sentence the user would write — not
