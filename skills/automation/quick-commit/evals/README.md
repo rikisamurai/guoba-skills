@@ -14,6 +14,9 @@ two short prompts, deterministic pass criteria.
   check, plus an overall score. Exit code 0 when every `must` passes.
 - `fixtures/setup.sh` — recreates the two sandbox git repos from scratch.
   Idempotent — wipes and rebuilds each fixture on every run.
+- `timing.sh` — drives headless Claude against each fixture N times,
+  records the mean wall-clock into the baseline JSON. Speed is
+  quick-commit's #1 priority, so wall-clock is graded as `must`.
 - `baseline-results/` — frozen snapshots of subagent runs from the iteration
   that shipped the v0.1.0 skill, kept as a "this is what passing looks like"
   reference. Not a contract — re-runs may legitimately produce different
@@ -87,7 +90,39 @@ OVERALL: PASS
 Exit code is `0` when every `must` passes across every eval, `1` otherwise.
 Wire that into CI when you want it.
 
-### 4. Compare to baseline
+### 4. Re-baseline wall-clock (`timing.sh`)
+
+Speed is the whole point of `qc`. `timing.sh` drives `claude -p` headlessly
+against each fixture, captures wall-clock per run, and merges the mean into
+`baseline-results/<eval>.json` as `wall_clock_seconds_avg5`. The grader's
+`numeric_le` check enforces the per-eval ceiling (set in `evals.json` at
+~1.4× the measured baseline mean — generous enough for network jitter,
+tight enough to break if a regression adds an extra tool round-trip).
+
+```bash
+bash timing.sh all                        # both fixtures, 5 runs each
+bash timing.sh feat-simple                # one fixture
+MODEL=opus RUNS=3 bash timing.sh all      # override model / sample count
+```
+
+Defaults: `MODEL=sonnet`, `RUNS=5`, `TARGET_DIR=/tmp/quick-commit-eval`.
+The wrapper resets the fixture between runs and stages a discovery
+symlink (`<fixture>/.claude/skills/quick-commit -> <repo canonical>`) so
+headless Claude resolves *this* repo's `SKILL.md`, not whatever the user
+has globally installed.
+
+**Cost / why not in CI.** Each run is one `claude -p` invocation; default
+`all` is 10 invocations (5 × 2 fixtures), roughly $0.10–0.50 on Sonnet
+and ~3 minutes wall-clock total. Run before shipping a skill change, not
+on every push. If you tighten the threshold and CI flaps, raise it rather
+than chasing tail-latency noise — you only need to catch *real* slowdowns
+(extra tool calls, restored diff reads), not 1-second jitter.
+
+When you change `SKILL.md` in a way that intentionally affects speed,
+re-run `timing.sh all`, eyeball the new mean, and update the per-eval
+`max` in `evals.json` (and the matching `_threshold_basis` note).
+
+### 5. Compare to baseline
 
 If a run regresses something the baseline got right, that is the signal to
 either fix the skill or update the baseline (with a note in the commit

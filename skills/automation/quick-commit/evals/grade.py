@@ -102,6 +102,16 @@ def run_check(check: dict, result: dict) -> CheckResult:
             return CheckResult("pass", f"subject is {len(subject)} chars")
         return CheckResult("fail", f"subject is {len(subject)} chars, max {check['max']}")
 
+    if ctype == "numeric_le":
+        actual = _get_field(result, check["field"])
+        try:
+            value = float(actual)
+        except (TypeError, ValueError):
+            return CheckResult("fail", f"{check['field']} is not numeric: {actual!r}")
+        if value <= check["max"]:
+            return CheckResult("pass", f"{check['field']} = {value}")
+        return CheckResult("fail", f"{check['field']} = {value}, max {check['max']}")
+
     return CheckResult("fail", f"unknown check type: {ctype}")
 
 

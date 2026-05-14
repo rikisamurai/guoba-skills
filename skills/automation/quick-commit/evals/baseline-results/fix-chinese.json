@@ -1,8 +1,18 @@
 {
   "commit_message": "fix: 处理用户或 profile 为空的情况",
   "commit_hash": "77c140b",
-  "files_committed": ["auth.py"],
+  "files_committed": [
+    "auth.py"
+  ],
   "files_skipped": [],
   "final_status_short": "",
-  "agent_report": "已提交 77c140b\n\n```\nfix: 处理用户或 profile 为空的情况\n```\n\n文件: auth.py (+2 -0)"
+  "agent_report": "已提交 77c140b\n\n```\nfix: 处理用户或 profile 为空的情况\n```\n\n文件: auth.py (+2 -0)",
+  "wall_clock_seconds_avg5": 16.112,
+  "wall_clock_samples": [
+    18.754,
+    14.1,
+    12.635,
+    16.244,
+    18.829
+  ]
 }

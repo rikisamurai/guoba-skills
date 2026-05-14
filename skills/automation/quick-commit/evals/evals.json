@@ -9,7 +9,9 @@
       "files_committed": "string[] — repo-relative paths included in the commit",
       "files_skipped": "{path,reason}[] — files the skill intentionally did not stage (should be empty in v0.4: `git add -A` always)",
       "final_status_short": "string — `git status --short` output after the commit",
-      "agent_report": "string — the user-facing reply"
+      "agent_report": "string — the user-facing reply",
+      "wall_clock_seconds_avg5": "number — mean wall-clock seconds across 5 wrapper runs (set by evals/timing.sh, not by the agent)",
+      "wall_clock_samples": "number[] — the raw 5 sample times that fed wall_clock_seconds_avg5"
     }
   },
   "check_types": {
@@ -20,6 +22,7 @@
     "array_excludes": {"args": ["field", "values"], "desc": "Array contains none of these elements."},
     "array_includes_all": {"args": ["field", "values"], "desc": "Array contains all of these elements."},
     "subject_length_le": {"args": ["max"], "desc": "First line of commit_message is ≤ max chars."},
+    "numeric_le": {"args": ["field", "max"], "desc": "Numeric field is ≤ max (used for wall-clock thresholds)."},
     "qualitative": {"args": [], "desc": "Skipped by auto-grader; printed as 'manual' for human review."}
   },
   "global_rules": [
@@ -28,7 +31,8 @@
     "Subject line ≤ 72 chars (hard cap 100).",
     "Commit language must mirror the recent git log (English vs Chinese vs mixed).",
     "On a clean tree the skill should report 'nothing to commit' and not invent a commit.",
-    "On a rebase/merge/cherry-pick in progress, the skill must bail out and surface the state."
+    "On a rebase/merge/cherry-pick in progress, the skill must bail out and surface the state.",
+    "Average wall-clock over 5 runs (via evals/timing.sh) must stay under the per-eval threshold — speed is the skill's #1 priority."
   ],
   "evals": [
     {
@@ -37,6 +41,7 @@
       "fixture": "eval-1-feat-simple",
       "prompt": "qc",
       "scenario": "One tracked file modification (`src/parser.ts`) adds trailing-comma support and a new exported function. Repo log uses English Conventional Commits.",
+      "_threshold_basis": "wall_clock_seconds_avg5 measured at 17.647 (model=sonnet, 2026-05-14, 5 samples). max set at ceil(mean * 1.4, 1dp).",
       "assertions": [
         {"id": "type-is-feat", "weight": "must", "human": "Commit type is feat (no scope).", "check": {"type": "regex_match", "field": "commit_message", "pattern": "^feat: "}},
         {"id": "no-scope", "weight": "must", "human": "Message has no scope (no `type(scope):` form).", "check": {"type": "regex_not_match", "field": "commit_message", "pattern": "^[a-z]+\\("}},
@@ -45,6 +50,7 @@
         {"id": "files-exact", "weight": "must", "human": "Exactly src/parser.ts committed.", "check": {"type": "array_equals", "field": "files_committed", "value": ["src/parser.ts"]}},
         {"id": "no-body", "weight": "must", "human": "No body (single-line message).", "check": {"type": "regex_not_match", "field": "commit_message", "pattern": "\\n\\n"}},
         {"id": "tree-clean", "weight": "must", "human": "Working tree clean after commit.", "check": {"type": "equals", "field": "final_status_short", "value": ""}},
+        {"id": "wall-clock-le", "weight": "must", "human": "Average wall-clock over 5 runs ≤ 24.8s (sonnet baseline 17.6s + 40% headroom).", "check": {"type": "numeric_le", "field": "wall_clock_seconds_avg5", "max": 24.8}},
         {"id": "report-has-hash", "weight": "should", "human": "Report mentions the commit hash.", "check": {"type": "regex_match", "field": "agent_report", "pattern": "[0-9a-f]{7,}"}},
         {"id": "subject-mentions-both-changes", "weight": "should", "human": "Subject mentions BOTH trailing-comma support AND the new parseArray export.", "check": {"type": "qualitative"}}
       ]
@@ -55,6 +61,7 @@
       "fixture": "eval-2-fix-chinese",
       "prompt": "快速提交",
       "scenario": "One tracked file modification (`auth.py`) adds a None guard preventing attribute access on a null user/profile — a real bug fix. Repo log is entirely Chinese Conventional Commits.",
+      "_threshold_basis": "wall_clock_seconds_avg5 measured at 16.112 (model=sonnet, 2026-05-14, 5 samples). max set at ceil(mean * 1.4, 1dp).",
       "assertions": [
         {"id": "type-is-fix", "weight": "must", "human": "Commit type is fix (no scope).", "check": {"type": "regex_match", "field": "commit_message", "pattern": "^fix: "}},
         {"id": "no-scope", "weight": "must", "human": "Message has no scope (no `type(scope):` form).", "check": {"type": "regex_not_match", "field": "commit_message", "pattern": "^[a-z]+\\("}},
@@ -64,6 +71,7 @@
         {"id": "no-body", "weight": "must", "human": "No body (single-line message).", "check": {"type": "regex_not_match", "field": "commit_message", "pattern": "\\n\\n"}},
         {"id": "tree-clean", "weight": "must", "human": "Working tree clean after commit.", "check": {"type": "equals", "field": "final_status_short", "value": ""}},
         {"id": "report-chinese", "weight": "must", "human": "User-facing report is Chinese (matches prompt language).", "check": {"type": "regex_match", "field": "agent_report", "pattern": "[\\u4e00-\\u9fff]"}},
+        {"id": "wall-clock-le", "weight": "must", "human": "Average wall-clock over 5 runs ≤ 22.6s (sonnet baseline 16.1s + 40% headroom).", "check": {"type": "numeric_le", "field": "wall_clock_seconds_avg5", "max": 22.6}},
         {"id": "subject-concrete", "weight": "should", "human": "Subject describes the actual condition (None / 空 / 为空), not just '修复 bug'.", "check": {"type": "qualitative"}}
       ]
     }
