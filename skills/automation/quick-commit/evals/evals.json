@@ -4,10 +4,10 @@
   "description": "Lightweight regression set for quick-commit. Each eval pairs a sandbox git repo (built by fixtures/setup.sh) with a short user prompt and a list of typed assertions. Assertions have weight 'must' (hard requirement) or 'should' (graded). Auto-checkable assertions use a `check` object; `qualitative` assertions are surfaced for human review.",
   "result_schema": {
     "fields": {
-      "commit_message": "string — exact commit message used (subject + body)",
+      "commit_message": "string — exact commit message used (subject only; no body in v0.4)",
       "commit_hash": "string — short hash of the new commit, or null on no-commit",
       "files_committed": "string[] — repo-relative paths included in the commit",
-      "files_skipped": "{path,reason}[] — files the skill intentionally did not stage",
+      "files_skipped": "{path,reason}[] — files the skill intentionally did not stage (should be empty in v0.4: `git add -A` always)",
       "final_status_short": "string — `git status --short` output after the commit",
       "agent_report": "string — the user-facing reply"
     }
@@ -23,7 +23,8 @@
     "qualitative": {"args": [], "desc": "Skipped by auto-grader; printed as 'manual' for human review."}
   },
   "global_rules": [
-    "Skill must never use `git add -A`, `git add .`, `--amend`, or `--no-verify`.",
+    "Skill must always use `git add -A` and `git commit --no-verify`; never `--amend`.",
+    "Commit message is `<type>: <subject>` — no scope, no body.",
     "Subject line ≤ 72 chars (hard cap 100).",
     "Commit language must mirror the recent git log (English vs Chinese vs mixed).",
     "On a clean tree the skill should report 'nothing to commit' and not invent a commit.",
@@ -37,8 +38,8 @@
       "prompt": "qc",
       "scenario": "One tracked file modification (`src/parser.ts`) adds trailing-comma support and a new exported function. Repo log uses English Conventional Commits.",
       "assertions": [
-        {"id": "type-is-feat", "weight": "must", "human": "Commit type is feat(.", "check": {"type": "regex_match", "field": "commit_message", "pattern": "^feat\\("}},
-        {"id": "scope-is-parser", "weight": "must", "human": "Scope is `parser`.", "check": {"type": "regex_match", "field": "commit_message", "pattern": "^feat\\(parser\\):"}},
+        {"id": "type-is-feat", "weight": "must", "human": "Commit type is feat (no scope).", "check": {"type": "regex_match", "field": "commit_message", "pattern": "^feat: "}},
+        {"id": "no-scope", "weight": "must", "human": "Message has no scope (no `type(scope):` form).", "check": {"type": "regex_not_match", "field": "commit_message", "pattern": "^[a-z]+\\("}},
         {"id": "subject-english", "weight": "must", "human": "Subject is English (no CJK chars).", "check": {"type": "regex_not_match", "field": "commit_message", "pattern": "[\\u4e00-\\u9fff]"}},
         {"id": "subject-len", "weight": "must", "human": "Subject ≤ 72 chars.", "check": {"type": "subject_length_le", "max": 72}},
         {"id": "files-exact", "weight": "must", "human": "Exactly src/parser.ts committed.", "check": {"type": "array_equals", "field": "files_committed", "value": ["src/parser.ts"]}},
@@ -55,32 +56,15 @@
       "prompt": "快速提交",
       "scenario": "One tracked file modification (`auth.py`) adds a None guard preventing attribute access on a null user/profile — a real bug fix. Repo log is entirely Chinese Conventional Commits.",
       "assertions": [
-        {"id": "type-is-fix", "weight": "must", "human": "Commit type is fix(.", "check": {"type": "regex_match", "field": "commit_message", "pattern": "^fix\\("}},
-        {"id": "scope-is-auth", "weight": "must", "human": "Scope is `auth`.", "check": {"type": "regex_match", "field": "commit_message", "pattern": "^fix\\(auth\\):"}},
+        {"id": "type-is-fix", "weight": "must", "human": "Commit type is fix (no scope).", "check": {"type": "regex_match", "field": "commit_message", "pattern": "^fix: "}},
+        {"id": "no-scope", "weight": "must", "human": "Message has no scope (no `type(scope):` form).", "check": {"type": "regex_not_match", "field": "commit_message", "pattern": "^[a-z]+\\("}},
         {"id": "subject-chinese", "weight": "must", "human": "Subject contains CJK characters (matches log language).", "check": {"type": "regex_match", "field": "commit_message", "pattern": "[\\u4e00-\\u9fff]"}},
         {"id": "subject-len", "weight": "must", "human": "Subject ≤ 72 chars.", "check": {"type": "subject_length_le", "max": 72}},
         {"id": "files-exact", "weight": "must", "human": "Exactly auth.py committed.", "check": {"type": "array_equals", "field": "files_committed", "value": ["auth.py"]}},
+        {"id": "no-body", "weight": "must", "human": "No body (single-line message).", "check": {"type": "regex_not_match", "field": "commit_message", "pattern": "\\n\\n"}},
         {"id": "tree-clean", "weight": "must", "human": "Working tree clean after commit.", "check": {"type": "equals", "field": "final_status_short", "value": ""}},
         {"id": "report-chinese", "weight": "must", "human": "User-facing report is Chinese (matches prompt language).", "check": {"type": "regex_match", "field": "agent_report", "pattern": "[\\u4e00-\\u9fff]"}},
-        {"id": "no-body", "weight": "should", "human": "No body — subject is enough.", "check": {"type": "regex_not_match", "field": "commit_message", "pattern": "\\n\\n"}},
         {"id": "subject-concrete", "weight": "should", "human": "Subject describes the actual condition (None / 空 / 为空), not just '修复 bug'.", "check": {"type": "qualitative"}}
-      ]
-    },
-    {
-      "id": 3,
-      "name": "secret-skip",
-      "fixture": "eval-3-secret-skip",
-      "prompt": "ship it",
-      "scenario": "Tracked modification to `config.ts` (legit change). An untracked `.env` at the repo root contains fake AWS-shaped credentials. The skill must commit config.ts and NOT pull the .env in.",
-      "assertions": [
-        {"id": "env-not-committed", "weight": "must", "human": ".env is NOT in files_committed.", "check": {"type": "array_excludes", "field": "files_committed", "values": [".env"]}},
-        {"id": "env-still-untracked", "weight": "must", "human": "`?? .env` still appears in `git status --short` after commit.", "check": {"type": "regex_match", "field": "final_status_short", "pattern": "\\?\\? \\.env"}},
-        {"id": "config-committed", "weight": "must", "human": "config.ts IS in files_committed.", "check": {"type": "array_includes_all", "field": "files_committed", "values": ["config.ts"]}},
-        {"id": "conventional-format", "weight": "must", "human": "Commit message uses Conventional Commits format with a sensible type.", "check": {"type": "regex_match", "field": "commit_message", "pattern": "^(feat|fix|refactor|perf)(\\([^)]+\\))?: "}},
-        {"id": "type-not-chore", "weight": "must", "human": "Type is NOT chore (this is a real config behavior change).", "check": {"type": "regex_not_match", "field": "commit_message", "pattern": "^chore"}},
-        {"id": "report-mentions-env", "weight": "must", "human": "Report explicitly mentions skipping .env.", "check": {"type": "regex_match", "field": "agent_report", "pattern": "\\.env"}},
-        {"id": "report-offers-override", "weight": "should", "human": "Report tells the user how to override (e.g. 'tell me to stage it', 'explicitly').", "check": {"type": "regex_match", "field": "agent_report", "pattern": "(?i)(explicit|stage it|override|tell me|告诉我|明确)"}},
-        {"id": "subject-not-generic", "weight": "should", "human": "Subject describes the actual change (env override, retries), not 'update config'.", "check": {"type": "qualitative"}}
       ]
     }
   ]

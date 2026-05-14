@@ -1,7 +1,7 @@
 # quick-commit · evals
 
-Lightweight regression set for the `quick-commit` skill. Three sandbox repos,
-three short prompts, deterministic pass criteria.
+Lightweight regression set for the `quick-commit` skill. Two sandbox repos,
+two short prompts, deterministic pass criteria.
 
 ## Files
 
@@ -12,7 +12,7 @@ three short prompts, deterministic pass criteria.
 - `grade.py` — runs every assertion in `evals.json` against
   `baseline-results/<eval-name>.json` and prints PASS / FAIL / MANUAL per
   check, plus an overall score. Exit code 0 when every `must` passes.
-- `fixtures/setup.sh` — recreates the three sandbox git repos from scratch.
+- `fixtures/setup.sh` — recreates the two sandbox git repos from scratch.
   Idempotent — wipes and rebuilds each fixture on every run.
 - `baseline-results/` — frozen snapshots of subagent runs from the iteration
   that shipped the v0.1.0 skill, kept as a "this is what passing looks like"
@@ -43,8 +43,7 @@ bash fixtures/setup.sh /tmp/quick-commit-eval
 ```
 
 This produces `/tmp/quick-commit-eval/<fixture-name>/repo/` for each of the
-three evals. Each repo has the right git log, the right dirty state, and (for
-eval-3) the untracked secrets file.
+two evals. Each repo has the right git log and the right dirty state.
 
 ### 2. Run the skill against each fixture
 
@@ -74,15 +73,15 @@ Output looks like:
 
 ```
 [feat-simple]
-  PASS   (must ) type-is-feat        Commit type is feat(.
-  PASS   (must ) scope-is-parser     Scope is `parser`.
+  PASS   (must ) type-is-feat        Commit type is feat (no scope).
+  PASS   (must ) no-scope            Message has no scope (no `type(scope):` form).
   ...
   --- PASS  must=7/7  should=1/1  manual=1
 ============================================================
 OVERALL: PASS
-  must:   20/20
-  should: 3/3
-  manual: 3  (qualitative — review by hand)
+  must:   14/14
+  should: 2/2
+  manual: 2  (qualitative — review by hand)
 ```
 
 Exit code is `0` when every `must` passes across every eval, `1` otherwise.
@@ -115,13 +114,11 @@ If you need a check type the grader doesn't yet support, add it to both
 
 ## Why this set is small on purpose
 
-The skill has a narrow surface (stage → message → commit → report), so three
+The skill has a narrow surface (stage → message → commit → report), so two
 well-chosen scenarios cover the high-value branches:
 
 - happy path with English log and a real new feature (eval-1)
 - language switching + correct fix-vs-refactor classification (eval-2)
-- the safety rail that matters most: don't sweep secrets into a commit
-  (eval-3)
 
 If the skill grows new behavior (e.g. handling `--amend` requests, multi-file
 splits, hooks-failed recovery), add an eval per behavior. Don't bloat for

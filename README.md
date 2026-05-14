@@ -72,7 +72,7 @@ python3 scripts/validate_repo.py
 ### automation
 
 - [gb-handoff](skills/automation/gb-handoff/) - Produce a self-contained handoff prompt for another agent (Codex, a fresh Claude session, a teammate) when the user wants to delegate continued work. Triggers on: "写一个 prompt 给 codex"、"交接一下"、"让 xxx 跟进"、"summary 一下再写个 prompt"、"handoff to another agent"、"write a prompt so X can continue", or any request to capture the current session state for continuation elsewhere.
-- [quick-commit](skills/automation/quick-commit/) - Stage tracked changes and create a Conventional Commits commit in one shot — no message-drafting back-and-forth, no confirmation prompts. Trigger on: "quick commit"、"qc"、"快速提交"、"提个 commit"、"commit 一下"、"帮我 commit"、"提交一下"、"ship it"、"commit & push (without push)", or any short request to capture current changes as a single commit. Skip when the user wants to (a) review/edit the message before committing, (b) only stage files, or (c) split the changes across multiple commits.
+- [quick-commit](skills/automation/quick-commit/) - One-shot commit, same turn, no preview. Trigger ONLY on: `qc`, `quick commit`, `快速 commit`, `快速提交`.
 
 ### research
 
