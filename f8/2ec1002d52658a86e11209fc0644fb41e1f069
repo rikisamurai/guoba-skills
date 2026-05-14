@@ -1,0 +1,25 @@
+skills/automation/quick-commit/evals/baseline-results/secret-skip.json
+  s_09b14b39277b65::t_5593ccd5422f25 2-3,6,9
+skills/automation/quick-commit/SKILL.md
+  s_09b14b39277b65::t_f92163281dc42d 4-7,10,15-16,18,20-23,25-27,29,31-34,36,38,46-47,49,51-58,60,66-68,70,72-81,83,85,94-95,97,99-100,102,104-112,116-121
+skills/automation/quick-commit/evals/baseline-results/fix-chinese.json
+  s_09b14b39277b65::t_5593ccd5422f25 3,7
+skills/automation/quick-commit/evals/baseline-results/feat-simple.json
+  s_09b14b39277b65::t_5593ccd5422f25 2-3,7
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.8",
+  "base_commit_sha": "f82ec1002d52658a86e11209fc0644fb41e1f069",
+  "prompts": {},
+  "sessions": {
+    "s_09b14b39277b65": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "24d68020-4b24-48e2-a608-5c91a7c57eb1",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "riki <122594833+rikisamurai@users.noreply.github.com>"
+    }
+  }
+}
