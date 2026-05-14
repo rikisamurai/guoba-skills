@@ -1,0 +1,37 @@
+skills/automation/quick-commit/evals/baseline-results/feat-simple.json
+  s_eb1c15927ac8c8::t_4846d398009708 2,7
+skills/automation/quick-commit/SKILL.md
+  s_eb1c15927ac8c8::t_d91ff45f6e6a99 8,13-14,21,26,38-39,44,47-49,51,53-54,56-61,63,66,69,73,78-79,86-88,91
+  s_eb1c15927ac8c8::t_e6f3f9c2e9a007 4-5
+skills/automation/quick-commit/evals/README.md
+  s_eb1c15927ac8c8::t_583278a7dfb000 15
+  s_eb1c15927ac8c8::t_525e8b6c9fc17a 3-4
+  s_eb1c15927ac8c8::t_a110084a16443f 76-77,82-84
+  s_eb1c15927ac8c8::t_b9a3b5bd33061b 46
+  s_eb1c15927ac8c8::t_693a1bfb1fc69a 117
+skills/automation/quick-commit/evals/baseline-results/fix-chinese.json
+  s_eb1c15927ac8c8::t_0e2cdfb44de84b 2,7
+skills/automation/quick-commit/evals/fixtures/setup.sh
+  s_eb1c15927ac8c8::t_dcbbb793b03e6b 2
+  s_eb1c15927ac8c8::t_187cb140166c5a 83
+README.md
+  s_eb1c15927ac8c8::t_2e8dd61abee67d 75
+skills/automation/quick-commit/evals/evals.json
+  s_eb1c15927ac8c8::t_f0ec84c48c2dfb 7,10,26-27,41-42,59-60,64
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.8",
+  "base_commit_sha": "e62a6e28b463069832e931e32a9f4f76741b065d",
+  "prompts": {},
+  "sessions": {
+    "s_eb1c15927ac8c8": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "f57f2939-945e-49a8-895a-44e4fead3fec",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "riki <122594833+rikisamurai@users.noreply.github.com>"
+    }
+  }
+}
