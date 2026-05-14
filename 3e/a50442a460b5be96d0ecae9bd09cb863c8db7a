@@ -1,0 +1,39 @@
+skills/automation/quick-commit/evals/baseline-results/fix-chinese.json
+  s_eb1c15927ac8c8::t_06d8cf8b2368ad 4-6,9-17
+skills/automation/quick-commit/evals/grade.py
+  s_eb1c15927ac8c8::t_78fe18d3f4396c 105-114
+skills/automation/quick-commit/evals/README.md
+  s_eb1c15927ac8c8::t_41030fac43594d 17-19
+  s_eb1c15927ac8c8::t_b3b15b40fefba8 93-125
+skills/automation/quick-commit/evals/timing.sh
+  s_eb1c15927ac8c8::t_298e0f38377e43 31
+  s_eb1c15927ac8c8::t_52f51d0564dbe6 1-12,14-30,32-40,45-131
+  s_eb1c15927ac8c8::t_cc5555423c1c85 13
+  s_eb1c15927ac8c8::t_6ef4a6972800f9 41-44
+skills/automation/quick-commit/evals/evals.json
+  s_eb1c15927ac8c8::t_c0f4515f651788 53
+  s_eb1c15927ac8c8::t_53b3c6cbef0d83 25
+  s_eb1c15927ac8c8::t_a0db7d7d034c8f 64
+  s_eb1c15927ac8c8::t_48f615b0758f8f 74
+  s_eb1c15927ac8c8::t_d4bf613e031912 12-14
+  s_eb1c15927ac8c8::t_1530096470ffd0 34-35
+  s_eb1c15927ac8c8::t_465837190665f2 44
+skills/automation/quick-commit/evals/baseline-results/feat-simple.json
+  s_eb1c15927ac8c8::t_06d8cf8b2368ad 4-6,9-17
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.8",
+  "base_commit_sha": "3ea50442a460b5be96d0ecae9bd09cb863c8db7a",
+  "prompts": {},
+  "sessions": {
+    "s_eb1c15927ac8c8": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "f57f2939-945e-49a8-895a-44e4fead3fec",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "riki <122594833+rikisamurai@users.noreply.github.com>"
+    }
+  }
+}
