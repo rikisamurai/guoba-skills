@@ -1,8 +1,8 @@
 {
   "commit_message": "fix(auth): 处理用户或 profile 为空的情况",
-  "commit_hash": "8e82295",
+  "commit_hash": "77c140b",
   "files_committed": ["auth.py"],
   "files_skipped": [],
   "final_status_short": "",
-  "agent_report": "已提交：\n\n```\nfix(auth): 处理用户或 profile 为空的情况\n```\n\n- 提交哈希：`8e82295`\n- 变更文件：`auth.py`（+2/-0）\n- 工作树已干净，无跳过项。"
+  "agent_report": "已提交 77c140b\n\n```\nfix(auth): 处理用户或 profile 为空的情况\n```\n\n文件: auth.py (+2 -0)"
 }

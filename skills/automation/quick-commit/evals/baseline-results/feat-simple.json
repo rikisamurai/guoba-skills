@@ -1,8 +1,8 @@
 {
-  "commit_message": "feat(parser): tolerate trailing commas and add parseArray",
-  "commit_hash": "9669602",
+  "commit_message": "feat(parser): support trailing commas and add parseArray",
+  "commit_hash": "bf68c70",
   "files_committed": ["src/parser.ts"],
   "files_skipped": [],
   "final_status_short": "",
-  "agent_report": "Committed `9669602`.\n\n```\nfeat(parser): tolerate trailing commas and add parseArray\n```\n\n- 1 file, +7/-1 (`src/parser.ts`)\n- Working tree clean."
+  "agent_report": "Committed bf68c70\n\n```\nfeat(parser): support trailing commas and add parseArray\n```\n\n1 file: src/parser.ts (+7 / -1)"
 }
