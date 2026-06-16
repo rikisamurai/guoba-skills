@@ -1,0 +1,35 @@
+README.md
+  s_63e47a5e86f929::t_bcdbe25a121d7e 75
+skills/automation/gb-neat/references/agent-paths.md
+  s_63e47a5e86f929::t_ebe98c8bc03cb4 1,3,7,9-13,15-16,19,21-24,26,28,30,32-36,38,40,44,46-49,51,53,55-58,60,62,64,66-68
+  s_63e47a5e86f929::t_d8341cb59c611f 2,4-6,8,14,17-18,20,25,27,29,31,37,39,41-43,45,50,52,54,59,61,63,65
+skills/automation/gb-neat/SKILL.md
+  s_63e47a5e86f929::t_e5fda7177d1227 4-6
+  s_63e47a5e86f929::t_b667a9f65ac554 1-2,7-8
+  s_63e47a5e86f929::t_d8341cb59c611f 3
+  s_63e47a5e86f929::t_ebe98c8bc03cb4 9-214
+skills/automation/gb-neat/references/sync-matrix.md
+  s_63e47a5e86f929::t_d8341cb59c611f 2,4,6,8,10,24,37,44,46,48,53,55,57
+  s_63e47a5e86f929::t_ebe98c8bc03cb4 1,3,5,7,9,11-23,25-36,38-43,45,47,49-52,54,56,58-65
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.7",
+  "base_commit_sha": "3c80b8a17af8204a0a3f604a8f9219bac29f426f",
+  "prompts": {},
+  "humans": {
+    "h_5edf2e61cf4c64": {
+      "author": "riki <122594833+rikisamurai@users.noreply.github.com>"
+    }
+  },
+  "sessions": {
+    "s_63e47a5e86f929": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "019ed08c-b7d3-7672-a966-745c0c62a2bf",
+        "model": "gpt-5.5"
+      },
+      "human_author": null
+    }
+  }
+}
