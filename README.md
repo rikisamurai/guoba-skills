@@ -72,6 +72,7 @@ python3 scripts/validate_repo.py
 ### automation
 
 - [gb-handoff](skills/automation/gb-handoff/) - Produce a self-contained handoff prompt for another agent (Codex, a fresh Claude session, a teammate) when the user wants to delegate continued work. Triggers on: "写一个 prompt 给 codex"、"交接一下"、"让 xxx 跟进"、"summary 一下再写个 prompt"、"handoff to another agent"、"write a prompt so X can continue", or any request to capture the current session state for continuation elsewhere.
+- [locate-frontend-code](skills/automation/locate-frontend-code/) - 探索某个前端功能的代码,产出一份「功能地图」(结构树 + 速查表 + 数据流), 帮你快速了解它的代码位置和结构。仅在以下显式触发时调用: `/locate-frontend-code`、"定位前端代码"、"这个功能的代码在哪/结构是什么"、 "给我一份功能地图"、"map this feature"。
 - [quick-commit](skills/automation/quick-commit/) - One-shot commit, same turn, no preview. Trigger ONLY on: `qc`, `quick commit`, `快速 commit`, `快速提交`.
 
 ### research
