@@ -1,0 +1,40 @@
+skills/content/gb-ai-hot/example/02-ai-daily.md
+  s_63e47a5e86f929::t_55075a4697f7ea 1-81
+skills/automation/qcp/SKILL.md
+  s_8e86a29b809d49::t_d6383938730c2d 1-118
+README.md
+  s_8e86a29b809d49::t_3d95541f0419cc 77
+  s_63e47a5e86f929::t_80a762e07086c9 80-83
+skills/content/gb-ai-hot/example/03-openai-updates.md
+  s_63e47a5e86f929::t_55075a4697f7ea 1-63
+skills/content/gb-ai-hot/example/01-today-ai-news.md
+  s_63e47a5e86f929::t_55075a4697f7ea 1-67
+skills/content/gb-ai-hot/SKILL.md
+  s_63e47a5e86f929::t_04cd9fc6c2cf9c 8,10,12,14,16-17,19-416
+  s_63e47a5e86f929::t_80a762e07086c9 1,4-5,7,9,11,13,15,18
+  s_63e47a5e86f929::t_b8e872b215702f 2-3,6
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.8",
+  "base_commit_sha": "c4189942b69adda1937f9f330c4db9eb0792b196",
+  "prompts": {},
+  "sessions": {
+    "s_63e47a5e86f929": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "019ed08c-b7d3-7672-a966-745c0c62a2bf",
+        "model": "gpt-5.5"
+      },
+      "human_author": "riki <122594833+rikisamurai@users.noreply.github.com>"
+    },
+    "s_8e86a29b809d49": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "019ed472-e637-7270-ac04-7c06feb7d94c",
+        "model": "gpt-5.5"
+      },
+      "human_author": "riki <122594833+rikisamurai@users.noreply.github.com>"
+    }
+  }
+}
