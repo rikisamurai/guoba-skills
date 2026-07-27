@@ -14,3 +14,11 @@ worktrees/
 
 # Superpowers planning artifacts — local working notes, not for public distribution
 docs/superpowers/
+
+# Scratch dirs and generated artifacts from running skills locally
+.codex-tmp/
+.tmp/
+.tmp-*
+tmp/
+output/
+ai-daily-overview-*.png
