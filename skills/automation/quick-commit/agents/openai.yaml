@@ -1,0 +1,5 @@
+interface:
+  display_name: "Quick Commit"
+  short_description: "One-shot commit, same turn, no preview"
+policy:
+  allow_implicit_invocation: false

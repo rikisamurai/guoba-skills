@@ -1,0 +1,5 @@
+interface:
+  display_name: "Quick Commit & Push"
+  short_description: "One-shot commit and push, same turn, no preview or authorization"
+policy:
+  allow_implicit_invocation: false

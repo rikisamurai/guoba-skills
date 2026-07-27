@@ -24,6 +24,8 @@ DISCOVERY_DIRS = (
     ".claude/skills",
 )
 RESOURCE_DIRS = {"scripts", "references", "assets"}
+OPENAI_CONFIG_PATH = "agents/openai.yaml"
+MANUAL_FRONTMATTER_LINE = "disable-model-invocation: true"
 
 
 def repo_root() -> Path:
@@ -41,6 +43,15 @@ def title_from_name(name: str) -> str:
 
 def escape_yaml_string(value: str) -> str:
     return value.replace("\\", "\\\\").replace('"', '\\"')
+
+
+def add_frontmatter_line(text: str, line: str) -> str:
+    """Append a top-level frontmatter line just before the closing delimiter."""
+    parts = text.split("---\n", 2)
+    if not text.startswith("---\n") or len(parts) < 3:
+        raise ValueError("SKILL.md template has no YAML frontmatter block")
+    _, frontmatter, body = parts
+    return f"---\n{frontmatter}{line}\n---\n{body}"
 
 
 def render_template(template: str, values: dict[str, str]) -> str:
@@ -68,8 +79,11 @@ def planned_paths(
     skill_dir: Path,
     resource_dirs: tuple[str, ...],
     with_references: bool,
+    manual: bool,
 ) -> list[Path]:
     paths = [skill_dir / "SKILL.md"]
+    if manual:
+        paths.append(skill_dir / OPENAI_CONFIG_PATH)
     for resource in resource_dirs:
         paths.append(skill_dir / resource / ".gitkeep")
     if with_references and "references" not in resource_dirs:
@@ -107,6 +121,7 @@ def create_skill(
     domain: str,
     description: str,
     with_references: bool = False,
+    manual: bool = False,
     resources: str | tuple[str, ...] | list[str] | None = None,
     dry_run: bool = False,
 ) -> Path:
@@ -136,16 +151,27 @@ def create_skill(
     }
 
     if dry_run:
-        for path in planned_paths(root, skill_dir, resource_dirs, with_references):
+        for path in planned_paths(root, skill_dir, resource_dirs, with_references, manual):
             print(f"Would create {path}")
         return skill_dir
 
     try:
         skill_dir.mkdir(parents=True)
-        (skill_dir / "SKILL.md").write_text(
-            render_template(skill_template, values),
-            encoding="utf-8",
-        )
+        skill_md = render_template(skill_template, values)
+        if manual:
+            skill_md = add_frontmatter_line(skill_md, MANUAL_FRONTMATTER_LINE)
+        (skill_dir / "SKILL.md").write_text(skill_md, encoding="utf-8")
+
+        if manual:
+            openai_template = (root / "templates" / "openai.template.yaml").read_text(
+                encoding="utf-8"
+            )
+            openai_config = skill_dir / OPENAI_CONFIG_PATH
+            openai_config.parent.mkdir()
+            openai_config.write_text(
+                render_template(openai_template, values),
+                encoding="utf-8",
+            )
 
         all_resource_dirs = set(resource_dirs)
         if with_references:
@@ -174,6 +200,14 @@ def main() -> int:
     parser.add_argument("--description", required=True)
     parser.add_argument("--with-references", action="store_true")
     parser.add_argument(
+        "--manual",
+        action="store_true",
+        help=(
+            "Manual-trigger skill: add disable-model-invocation for Claude and "
+            "agents/openai.yaml with allow_implicit_invocation: false for Codex"
+        ),
+    )
+    parser.add_argument(
         "--resources",
         default="",
         help="Comma-separated optional resource dirs: scripts,references,assets",
@@ -189,6 +223,7 @@ def main() -> int:
             domain=args.domain,
             description=args.description,
             with_references=args.with_references,
+            manual=args.manual,
             resources=args.resources,
             dry_run=args.dry_run,
         )

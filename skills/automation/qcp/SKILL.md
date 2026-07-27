@@ -1,12 +1,12 @@
 ---
 name: qcp
 description: >
-  One-shot commit and push, same turn, no preview or authorization. Trigger
-  ONLY on: `qcp`, `quick commit push`, `quick commit & push`,
-  `快速 commit & push`, `快速提交并推送`.
+  One-shot commit and push, same turn, no preview or authorization. Manual
+  only: Claude `/qcp`, Codex `$qcp`.
+disable-model-invocation: true
 metadata:
   author: riki
-  version: "0.1.0"
+  version: "0.2.0"
 ---
 
 # QCP

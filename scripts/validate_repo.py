@@ -21,6 +21,12 @@ DISCOVERY_DIRS = (
     ".agents/skills",
     ".claude/skills",
 )
+OPENAI_CONFIG_PATH = "agents/openai.yaml"
+IMPLICIT_INVOCATION_RE = re.compile(
+    r"^\s*allow_implicit_invocation:\s*(?P<value>\S+)\s*$", re.MULTILINE
+)
+TRUE_VALUES = {"true", "yes", "on", "1"}
+FALSE_VALUES = {"false", "no", "off", "0"}
 
 
 def repo_root() -> Path:
@@ -29,6 +35,36 @@ def repo_root() -> Path:
 
 def expected_readme(root: Path, readme_text: str) -> str:
     return refresh_index.replace_index(readme_text, refresh_index.build_index(root))
+
+
+def codex_blocks_implicit_invocation(skill_dir: Path) -> bool:
+    """Read agents/openai.yaml without a YAML dependency: a targeted key scan."""
+    config = skill_dir / OPENAI_CONFIG_PATH
+    if not config.is_file():
+        return False
+    match = IMPLICIT_INVOCATION_RE.search(config.read_text(encoding="utf-8"))
+    return bool(match) and match.group("value").strip('"\'').lower() in FALSE_VALUES
+
+
+def validate_manual_invocation(
+    skill_dir: Path, frontmatter: dict[str, str], errors: list[str]
+) -> None:
+    """Manual-trigger skills must say so on both runtimes, or on neither."""
+    claude_manual = (
+        frontmatter.get("disable-model-invocation", "").strip('"\'').lower()
+        in TRUE_VALUES
+    )
+    codex_manual = codex_blocks_implicit_invocation(skill_dir)
+    if claude_manual and not codex_manual:
+        errors.append(
+            f"{skill_dir}: 'disable-model-invocation: true' needs "
+            f"'policy.allow_implicit_invocation: false' in {OPENAI_CONFIG_PATH}"
+        )
+    if codex_manual and not claude_manual:
+        errors.append(
+            f"{skill_dir}: '{OPENAI_CONFIG_PATH}' blocks implicit invocation, so "
+            "SKILL.md needs 'disable-model-invocation: true'"
+        )
 
 
 def validate_frontmatter(root: Path, errors: list[str]) -> list[Path]:
@@ -51,6 +87,7 @@ def validate_frontmatter(root: Path, errors: list[str]) -> list[Path]:
             )
         if not frontmatter.get("description"):
             errors.append(f"{skill_md}: frontmatter description is required")
+        validate_manual_invocation(skill_dir, frontmatter, errors)
     return skill_paths
 
 

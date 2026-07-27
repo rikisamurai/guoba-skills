@@ -26,6 +26,16 @@ scripts/
 .claude/skills/
 ```
 
+A skill folder holds one `SKILL.md` plus optional `scripts/`, `references/`, `assets/`,
+and an optional `agents/openai.yaml` for Codex-only settings (display name, invocation
+policy). Claude-only settings live in the `SKILL.md` frontmatter itself:
+
+```text
+skills/automation/deploy/
+  SKILL.md            # name, description, workflow + Claude frontmatter fields
+  agents/openai.yaml  # Codex interface + policy
+```
+
 ## Install
 
 Install all skills into your local agent (Claude Code, Codex, or any [Agent Skills](https://skills.sh)-compatible agent):
@@ -46,6 +56,12 @@ Create a skill:
 
 ```bash
 python3 scripts/new_skill.py example-skill --domain automation --description "Example trigger text"
+```
+
+Create a manual-trigger skill (Claude `/name` or Codex `$name` only, never auto-invoked):
+
+```bash
+python3 scripts/new_skill.py deploy --domain automation --description "Deploy the app" --manual
 ```
 
 Create a skill with reference guidance and resource folders:
@@ -73,13 +89,13 @@ python3 scripts/validate_repo.py
 
 - [gb-handoff](skills/automation/gb-handoff/) - Produce a self-contained handoff prompt for another agent (Codex, a fresh Claude session, a teammate) when the user wants to delegate continued work. Triggers on: "写一个 prompt 给 codex"、"交接一下"、"让 xxx 跟进"、"summary 一下再写个 prompt"、"handoff to another agent"、"write a prompt so X can continue", or any request to capture the current session state for continuation elsewhere.
 - [gb-neat](skills/automation/gb-neat/) - Use when explicitly invoked as `/gb-neat` or `/neat`, or when the user clearly asks to sync project docs or agent memory. Do not use for ordinary summaries, handoffs, wrap-up, or generic tidy-up requests.
-- [locate-frontend-code](skills/automation/locate-frontend-code/) - 探索某个前端功能的代码,产出一份「功能地图」(结构树 + 速查表 + 数据流), 帮你快速了解它的代码位置和结构。仅在以下显式触发时调用: `/locate-frontend-code`、"定位前端代码"、"这个功能的代码在哪/结构是什么"、 "给我一份功能地图"、"map this feature"。
-- [qcp](skills/automation/qcp/) - One-shot commit and push, same turn, no preview or authorization. Trigger ONLY on: `qcp`, `quick commit push`, `quick commit & push`, `快速 commit & push`, `快速提交并推送`.
-- [quick-commit](skills/automation/quick-commit/) - One-shot commit, same turn, no preview. Trigger ONLY on: `qc`, `quick commit`, `快速 commit`, `快速提交`.
+- [locate-frontend-code](skills/automation/locate-frontend-code/) - 探索某个前端功能的代码,产出一份「功能地图」(结构树 + 速查表 + 数据流), 帮你快速了解它的代码位置和结构。手动触发:Claude `/locate-frontend-code`, Codex `$locate-frontend-code`。
+- [qcp](skills/automation/qcp/) - One-shot commit and push, same turn, no preview or authorization. Manual only: Claude `/qcp`, Codex `$qcp`.
+- [quick-commit](skills/automation/quick-commit/) - One-shot commit, same turn, no preview. Manual only: Claude `/quick-commit`, Codex `$quick-commit`.
 
 ### content
 
-- [gb-ai-hot](skills/content/gb-ai-hot/) - Use when the user asks for current AI news, AI HOT, AI daily reports, model/product launches, AI papers, or recent OpenAI/Anthropic/Google updates.
+- [gb-ai-hot](skills/content/gb-ai-hot/) - Use when the user asks for current AI news, AI HOT, AI daily reports, model/product launches, AI papers, or recent OpenAI/Anthropic/Google updates. 中文触发语同样适用："AI 日报"、"今天 AI 圈有什么"、"过去 24 小时 大新闻"、"最近的模型发布"、"最近的 AI 论文"、"OpenAI/Anthropic 最近有 什么动态"。
 
 ### research
 

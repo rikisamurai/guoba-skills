@@ -2,12 +2,13 @@
 name: locate-frontend-code
 description: >
   探索某个前端功能的代码,产出一份「功能地图」(结构树 + 速查表 + 数据流),
-  帮你快速了解它的代码位置和结构。仅在以下显式触发时调用:
-  `/locate-frontend-code`、"定位前端代码"、"这个功能的代码在哪/结构是什么"、
-  "给我一份功能地图"、"map this feature"。
+  帮你快速了解它的代码位置和结构。手动触发:Claude `/locate-frontend-code`,
+  Codex `$locate-frontend-code`。
+disable-model-invocation: true
+argument-hint: "<路由 | 界面文字 | 功能描述>"
 metadata:
   author: riki
-  version: "0.2.0"
+  version: "0.3.0"
 ---
 
 # 前端功能地图

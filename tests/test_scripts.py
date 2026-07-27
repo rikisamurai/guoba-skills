@@ -55,6 +55,14 @@ def seed_scaffold(root):
         "Load files from `references/` only when needed.\n",
         encoding="utf-8",
     )
+    (root / "templates/openai.template.yaml").write_text(
+        "interface:\n"
+        '  display_name: "{{title}}"\n'
+        '  short_description: "{{description}}"\n'
+        "policy:\n"
+        "  allow_implicit_invocation: false\n",
+        encoding="utf-8",
+    )
 
 
 class SkillScriptTests(unittest.TestCase):
@@ -149,6 +157,71 @@ class SkillScriptTests(unittest.TestCase):
             self.assertIn("[example-skill](skills/automation/example-skill/)", readme)
             with redirect_stdout(StringIO()), redirect_stderr(StringIO()):
                 self.assertEqual(validate_repo.validate_repo(root), 0)
+
+    def test_new_skill_manual_writes_dual_agent_config(self):
+        new_skill = load_script("new_skill.py")
+        validate_repo = load_script("validate_repo.py")
+
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            seed_scaffold(root)
+
+            new_skill.create_skill(
+                root=root,
+                name="manual-skill",
+                domain="automation",
+                description="Manual trigger text",
+                manual=True,
+                dry_run=False,
+            )
+
+            skill_dir = root / "skills/automation/manual-skill"
+            skill_md = (skill_dir / "SKILL.md").read_text(encoding="utf-8")
+            self.assertIn("disable-model-invocation: true\n---\n", skill_md)
+
+            config = (skill_dir / "agents/openai.yaml").read_text(encoding="utf-8")
+            self.assertIn('display_name: "Manual Skill"', config)
+            self.assertIn("allow_implicit_invocation: false", config)
+
+            with redirect_stdout(StringIO()), redirect_stderr(StringIO()):
+                self.assertEqual(validate_repo.validate_repo(root), 0)
+
+    def test_validate_repo_rejects_half_configured_manual_skill(self):
+        new_skill = load_script("new_skill.py")
+        validate_repo = load_script("validate_repo.py")
+
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            seed_scaffold(root)
+
+            new_skill.create_skill(
+                root=root,
+                name="manual-skill",
+                domain="automation",
+                description="Manual trigger text",
+                manual=True,
+                dry_run=False,
+            )
+            skill_dir = root / "skills/automation/manual-skill"
+            skill_md = skill_dir / "SKILL.md"
+            config = skill_dir / "agents/openai.yaml"
+
+            config.unlink()
+            with redirect_stdout(StringIO()), redirect_stderr(StringIO()):
+                self.assertEqual(validate_repo.validate_repo(root), 1)
+
+            config.write_text(
+                "policy:\n  allow_implicit_invocation: false\n",
+                encoding="utf-8",
+            )
+            skill_md.write_text(
+                skill_md.read_text(encoding="utf-8").replace(
+                    "disable-model-invocation: true\n", ""
+                ),
+                encoding="utf-8",
+            )
+            with redirect_stdout(StringIO()), redirect_stderr(StringIO()):
+                self.assertEqual(validate_repo.validate_repo(root), 1)
 
     def test_new_skill_dry_run_leaves_filesystem_unchanged(self):
         new_skill = load_script("new_skill.py")

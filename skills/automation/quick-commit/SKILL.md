@@ -1,11 +1,12 @@
 ---
 name: quick-commit
 description: >
-  One-shot commit, same turn, no preview. Trigger ONLY on: `qc`,
-  `quick commit`, `快速 commit`, `快速提交`.
+  One-shot commit, same turn, no preview. Manual only: Claude
+  `/quick-commit`, Codex `$quick-commit`.
+disable-model-invocation: true
 metadata:
   author: riki
-  version: "0.4.0"
+  version: "0.5.0"
 ---
 
 # Quick Commit

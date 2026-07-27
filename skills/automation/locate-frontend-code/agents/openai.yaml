@@ -1,0 +1,6 @@
+interface:
+  display_name: "Locate Frontend Code"
+  short_description: "产出前端功能地图:结构树 + 速查表 + 数据流"
+  default_prompt: "给我这个前端功能的功能地图:结构树 + 速查表 + 数据流,路径与行号都要核对过。"
+policy:
+  allow_implicit_invocation: false
