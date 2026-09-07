@@ -87,6 +87,7 @@ python3 scripts/validate_repo.py
 <!-- skills-index:start -->
 ### automation
 
+- [clean-worktree](skills/automation/clean-worktree/) - Clean up the current completed task worktree and local branch, then return to the updated main branch. Manual only: Claude /clean-worktree, Codex $clean-worktree.
 - [gb-handoff](skills/automation/gb-handoff/) - Produce a self-contained handoff prompt for another agent (Codex, a fresh Claude session, a teammate) when the user wants to delegate continued work. Triggers on: "写一个 prompt 给 codex"、"交接一下"、"让 xxx 跟进"、"summary 一下再写个 prompt"、"handoff to another agent"、"write a prompt so X can continue", or any request to capture the current session state for continuation elsewhere.
 - [gb-neat](skills/automation/gb-neat/) - Use when explicitly invoked as `/gb-neat` or `/neat`, or when the user clearly asks to sync project docs or agent memory. Do not use for ordinary summaries, handoffs, wrap-up, or generic tidy-up requests.
 - [locate-frontend-code](skills/automation/locate-frontend-code/) - 探索某个前端功能的代码,产出一份「功能地图」(结构树 + 速查表 + 数据流), 帮你快速了解它的代码位置和结构。手动触发:Claude `/locate-frontend-code`, Codex `$locate-frontend-code`。

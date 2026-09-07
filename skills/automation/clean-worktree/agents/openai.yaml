@@ -1,0 +1,5 @@
+interface:
+  display_name: "Clean Worktree"
+  short_description: "Clean merged task worktrees and update the main branch"
+policy:
+  allow_implicit_invocation: false
