@@ -97,6 +97,7 @@ python3 scripts/validate_repo.py
 ### content
 
 - [gb-ai-hot](skills/content/gb-ai-hot/) - Use when the user asks for current AI news, AI HOT, AI daily reports, model/product launches, AI papers, or recent OpenAI/Anthropic/Google updates. 中文触发语同样适用："AI 日报"、"今天 AI 圈有什么"、"过去 24 小时 大新闻"、"最近的模型发布"、"最近的 AI 论文"、"OpenAI/Anthropic 最近有 什么动态"。
+- [gb-html](skills/content/gb-html/) - Turn an answer into a visual HTML explainer or an explicitly requested explainer video, using a Markdown draft and the bundled CLI. Also supports settings, page patches and cleanup. Manual only: Claude /gb-html, Codex $gb-html.
 
 ### research
 
